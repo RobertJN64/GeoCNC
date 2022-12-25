@@ -1,17 +1,18 @@
 import rasterio
 from rasterio.plot import show
 from PIL import Image
+from PIL import ImageFilter
 from datetime import datetime
 import os
 
 def extract_layer(arr, max_v, resize, fname):
-
     a = (arr < max_v)
-    print(a)
     img = Image.fromarray(a)
     img = img.resize((int(img.width/resize), int(img.height/resize)))
-
+    img = img.filter(ImageFilter.BLUR)
+    img = img.filter(ImageFilter.MaxFilter())
     img.save(fname + ".png")
+    print("Saved:", fname)
 
 
 def main():
